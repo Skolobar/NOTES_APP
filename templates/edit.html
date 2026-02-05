@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="edit-container">
+    <h1>Uredi bilješku</h1>
+    
+    <form method="POST" class="edit-form">
+        <div class="form-group">
+            <label for="text">Sadržaj:</label>
+            <textarea 
+                id="text"
+                name="text" 
+                required
+                placeholder="Unesite tekst bilješke..."
+                rows="10"
+            >{{ note.text }}</textarea>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Sačuvaj izmjene</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Odustani</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

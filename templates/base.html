@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="hr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Napomene</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>📝 Napomene</h1>
+
+    <div style="display:flex; gap:12px; align-items:center;">
+        {% if user %}
+            <span style="font-size:14px; opacity:0.8;">
+                👤 {{ user }}
+            </span>
+
+            <a href="{{ url_for('logout') }}"
+               style="font-size:14px; text-decoration:none; color:var(--danger);">
+                Logout
+            </a>
+        {% endif %}
+
+        <button id="themeToggle" class="theme-toggle">🌙</button>
+    </div>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<button id="addBtn" class="fab">+</button>
+
+<script>
+    // Dark mode toggle
+    const root = document.documentElement;
+    const toggleBtn = document.getElementById("themeToggle");
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+        root.setAttribute("data-theme", savedTheme);
+        toggleBtn.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+    }
+
+    toggleBtn.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme");
+        const next = current === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        toggleBtn.textContent = next === "dark" ? "☀️" : "🌙";
+    });
+
+    // Add form toggle
+    const addBtn = document.getElementById("addBtn");
+    const form = document.getElementById("addForm");
+    const textarea = document.getElementById("noteText");
+
+    if (addBtn && form && textarea) {
+        addBtn.addEventListener("click", () => {
+            form.classList.toggle("show");
+            textarea.focus();
+        });
+    }
+</script>
+
+</body>
+</html>

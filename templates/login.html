@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<main style="max-width:400px; margin:60px auto;">
+    <h2>Prijava</h2>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="text" name="username" placeholder="Korisničko ime" required>
+        <input type="password" name="password" placeholder="Lozinka" required>
+        <button type="submit">Uđi</button>
+    </form>
+
+    <p style="margin-top:12px;">
+        Nemaš račun? <a href="{{ url_for('register') }}">Registracija</a>
+    </p>
+</main>
+
+</body>
+</html>

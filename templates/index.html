@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="POST" id="addForm" class="add-form">
+    <textarea id="noteText" name="text" placeholder="Upiši novu napomenu..." required></textarea>
+    <button type="submit">Spremi</button>
+</form>
+
+<ul class="notes">
+    {% for note in notes %}
+        <li class="{% if note.pinned %}pinned{% endif %}">
+            <p>{{ note.text }}</p>
+
+            <small class="timestamp">
+                {{ note.created_at[:16].replace('T', ' ') }}
+            </small>
+
+            <div class="actions">
+                <form method="POST" action="{{ url_for('toggle_pin', note_id=note.id) }}">
+                    <button type="submit" class="pin">
+                        {% if note.pinned %}📌 Otkvači{% else %}📍 Pin{% endif %}
+                    </button>
+                </form>
+
+                <a href="{{ url_for('edit', note_id=note.id) }}">Uredi</a>
+
+                <form method="POST"
+                      action="{{ url_for('delete', note_id=note.id) }}"
+                      onsubmit="return confirm('Da li ste sigurni da želite obrisati napomenu?');">
+                    <button type="submit" class="delete">Obriši</button>
+                </form>
+            </div>
+        </li>
+    {% else %}
+        <li class="empty">Nema napomena.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

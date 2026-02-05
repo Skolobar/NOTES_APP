@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "text": "1 Ivana",
+    "created_at": "2026-02-05T13:46:29.972718",
+    "pinned": false
+  },
+  {
+    "id": 2,
+    "text": "2 Ivana",
+    "created_at": "2026-02-05T13:46:36.634095",
+    "pinned": false
+  }
+]
