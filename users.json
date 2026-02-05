@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "john_doe",
+      "email": "john@example.com",
+      "createdAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "marko": "scrypt:32768:8:1$VGg4PxHNcWVptqjJ$3ac0536aee177c94be68386b08a4f63c2e11dc4476b698dc4578e4472142d60ca2e55178f7f39ee68f4f67f7c56ff56f95941421ef299cec89c7916b05c3c8a3",
+  "juka": "scrypt:32768:8:1$TcJXHXrEiiXoxPDR$b382c0d1158988b57a3aa8792c9c06644ae5d1142e47affc71b001e878791e27d1ca79564db06e712958c841d5e8d2e38c3d58ab30be6b1a4f8c5e69de6f9c30"
+}
