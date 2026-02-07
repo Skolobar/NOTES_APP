@@ -12,16 +12,19 @@
     <h1>📝 Napomene</h1>
 
     <div style="display:flex; gap:12px; align-items:center;">
-        {% if user %}
-            <span style="font-size:14px; opacity:0.8;">
-                👤 {{ user }}
-            </span>
+        <span id="userEmail" style="font-size:14px; opacity:0.8;"></span>
 
-            <a href="{{ url_for('logout') }}"
-               style="font-size:14px; text-decoration:none; color:var(--danger);">
-                Logout
-            </a>
-        {% endif %}
+        <a href="/login"
+           id="loginLink"
+           style="font-size:14px; text-decoration:none;">
+            Login
+        </a>
+
+        <a href="#"
+           id="logoutLink"
+           style="font-size:14px; text-decoration:none; color:var(--danger); display:none;">
+            Logout
+        </a>
 
         <button id="themeToggle" class="theme-toggle">🌙</button>
     </div>
@@ -32,6 +35,45 @@
 </main>
 
 <button id="addBtn" class="fab">+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://XXXX.supabase.co";
+const SUPABASE_ANON_KEY = "XXXX";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+// UI auth state
+async function initAuthUI() {
+    const { data } = await supabaseClient.auth.getUser();
+
+    const userEmail = document.getElementById("userEmail");
+    const loginLink = document.getElementById("loginLink");
+    const logoutLink = document.getElementById("logoutLink");
+
+    if (data.user) {
+        userEmail.textContent = "👤 " + data.user.email;
+        loginLink.style.display = "none";
+        logoutLink.style.display = "inline";
+    } else {
+        userEmail.textContent = "";
+        loginLink.style.display = "inline";
+        logoutLink.style.display = "none";
+    }
+}
+
+document.getElementById("logoutLink").addEventListener("click", async (e) => {
+    e.preventDefault();
+    await supabaseClient.auth.signOut();
+    window.location.href = "/login";
+});
+
+initAuthUI();
+</script>
 
 <script>
     // Dark mode toggle
