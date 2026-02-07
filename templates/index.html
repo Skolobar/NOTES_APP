@@ -10,7 +10,7 @@
     </form>
 
     <ul class="notes" id="notesList">
-        <li class="empty">Nema napomena.</li>
+        <li class="empty">Učitavanje...</li>
     </ul>
 
 </div>
@@ -23,21 +23,17 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
-const SUPABASE_URL = "https://XXXX.supabase.co";
-const SUPABASE_ANON_KEY = "XXXX";
-
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
+let currentUser = null;
 
 const appEl = document.getElementById("app");
 const notLoggedInEl = document.getElementById("notLoggedIn");
+const notesList = document.getElementById("notesList");
+const addForm = document.getElementById("addForm");
+const noteText = document.getElementById("noteText");
 
-async function init() {
+// INIT
+async function initNotesApp() {
     const { data } = await supabaseClient.auth.getUser();
 
     if (!data.user) {
@@ -46,12 +42,65 @@ async function init() {
         return;
     }
 
-    // user je logiran
+    currentUser = data.user;
     appEl.style.display = "block";
     notLoggedInEl.style.display = "none";
+
+    loadNotes();
 }
 
-init();
-</script>
+// LOAD NOTES
+async function loadNotes() {
+    notesList.innerHTML = "<li class='empty'>Učitavanje...</li>";
 
+    const { data, error } = await supabaseClient
+        .from("notes")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        notesList.innerHTML = "<li class='empty'>Greška pri učitavanju</li>";
+        return;
+    }
+
+    if (!data.length) {
+        notesList.innerHTML = "<li class='empty'>Nema napomena.</li>";
+        return;
+    }
+
+    notesList.innerHTML = "";
+
+    data.forEach(note => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <p>${note.content}</p>
+            <small class="timestamp">
+                ${new Date(note.created_at).toLocaleString()}
+            </small>
+        `;
+        notesList.appendChild(li);
+    });
+}
+
+// ADD NOTE
+addForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const text = noteText.value.trim();
+    if (!text) return;
+
+    await supabaseClient
+        .from("notes")
+        .insert({
+            user_id: currentUser.id,
+            content: text
+        });
+
+    noteText.value = "";
+    loadNotes();
+});
+
+initNotesApp();
+</script>
 {% endblock %}
