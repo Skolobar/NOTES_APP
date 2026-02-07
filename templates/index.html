@@ -38,3 +38,29 @@
 </ul>
 
 {% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://XXXX.supabase.co";
+  const SUPABASE_ANON_KEY = "XXXX";
+
+  const supabase = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+</script>
+<script>
+  async function testLogin() {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: "test@test.com",
+      password: "123456"
+    });
+
+    if (error) {
+      console.error("LOGIN ERROR:", error.message);
+    } else {
+      console.log("LOGIN OK:", data.user.email);
+    }
+  }
+
+  testLogin();
+</script>
