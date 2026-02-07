@@ -1,30 +1,48 @@
-<!DOCTYPE html>
-<html lang="hr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-<main style="max-width:400px; margin:60px auto;">
-    <h2>Prijava</h2>
+{% block content %}
+<h2>Prijava</h2>
 
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
+<form onsubmit="login(event)" class="login-form">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Lozinka" required>
+    <button type="submit">Uđi</button>
+</form>
 
-    <form method="POST">
-        <input type="text" name="username" placeholder="Korisničko ime" required>
-        <input type="password" name="password" placeholder="Lozinka" required>
-        <button type="submit">Uđi</button>
-    </form>
+<p id="error" style="color:red;"></p>
+{% endblock %}
 
-    <p style="margin-top:12px;">
-        Nemaš račun? <a href="{{ url_for('register') }}">Registracija</a>
-    </p>
-</main>
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-</body>
-</html>
+<script>
+const SUPABASE_URL = "https://XXXX.supabase.co";
+const SUPABASE_ANON_KEY = "XXXX";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+async function login(e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const errorEl = document.getElementById("error");
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    if (error) {
+        errorEl.textContent = error.message;
+        return;
+    }
+
+    // login OK → idi na notes
+    window.location.href = "/";
+}
+</script>
+{% endblock %}
