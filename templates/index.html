@@ -57,6 +57,7 @@ async function loadNotes() {
         .from("notes")
         .select("*")
         .eq("user_id", currentUser.id)
+        .order("pinned", { ascending: false })
         .order("created_at", { ascending: false });
 
     if (error) {
@@ -73,12 +74,30 @@ async function loadNotes() {
 
     data.forEach(note => {
         const li = document.createElement("li");
+        if (note.pinned) li.classList.add("pinned");
+
         li.innerHTML = `
-            <p>${note.content}</p>
+            <p contenteditable="true"
+               onblur="editNote('${note.id}', this.innerText)">
+               ${note.content}
+            </p>
+
             <small class="timestamp">
                 ${new Date(note.created_at).toLocaleString()}
             </small>
+
+            <div class="actions">
+                <button onclick="togglePin('${note.id}', ${note.pinned})">
+                    ${note.pinned ? "📌 Otkvači" : "📍 Pin"}
+                </button>
+
+                <button onclick="deleteNote('${note.id}')"
+                        class="delete">
+                    Obriši
+                </button>
+            </div>
         `;
+
         notesList.appendChild(li);
     });
 }
@@ -90,16 +109,47 @@ addForm.addEventListener("submit", async (e) => {
     const text = noteText.value.trim();
     if (!text) return;
 
-    await supabaseClient
-        .from("notes")
-        .insert({
-            user_id: currentUser.id,
-            content: text
-        });
+    await supabaseClient.from("notes").insert({
+        user_id: currentUser.id,
+        content: text
+    });
 
     noteText.value = "";
     loadNotes();
 });
+
+// DELETE
+async function deleteNote(id) {
+    if (!confirm("Obrisati napomenu?")) return;
+
+    await supabaseClient
+        .from("notes")
+        .delete()
+        .eq("id", id);
+
+    loadNotes();
+}
+
+// PIN / UNPIN
+async function togglePin(id, pinned) {
+    await supabaseClient
+        .from("notes")
+        .update({ pinned: !pinned })
+        .eq("id", id);
+
+    loadNotes();
+}
+
+// EDIT (on blur)
+async function editNote(id, newText) {
+    newText = newText.trim();
+    if (!newText) return;
+
+    await supabaseClient
+        .from("notes")
+        .update({ content: newText })
+        .eq("id", id);
+}
 
 initNotesApp();
 </script>
