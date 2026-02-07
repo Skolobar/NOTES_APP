@@ -1,173 +1,196 @@
-/* THEME VARIABLES */
-:root {
-    --bg: #f7f8fc;
-    --card: #ffffff;
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --danger: #ef4444;
-    --text: #111827;
-    --muted: #6b7280;
-    --border: #e5e7eb;
-}
+/* =========================
+   BASE
+========================= */
 
-[data-theme="dark"] {
-    --bg: #0f172a;
-    --card: #020617;
-    --primary: #818cf8;
-    --primary-dark: #6366f1;
-    --danger: #f87171;
-    --text: #e5e7eb;
-    --muted: #94a3b8;
-    --border: #1e293b;
+:root {
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --primary: #4f6ef7;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --danger: #ef4444;
+  --radius: 16px;
 }
 
 * {
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
+
 header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--card);
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  padding: 16px 20px;
+  background: var(--bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 header h1 {
-    font-size: 18px;
-    margin: 0;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
 }
 
-.theme-toggle {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
+header a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
 }
 
-/* MAIN */
+/* =========================
+   MAIN
+========================= */
+
 main {
-    padding: 16px;
-    max-width: 520px;
-    margin: 0 auto;
+  padding: 0 16px 120px;
 }
 
-/* ADD FORM */
+/* =========================
+   ADD FORM
+========================= */
+
 .add-form {
-    display: none;
-    margin-bottom: 16px;
+  display: none;
+  margin-bottom: 16px;
 }
 
 .add-form.show {
-    display: block;
+  display: block;
 }
 
-textarea {
-    width: 100%;
-    min-height: 90px;
-    padding: 12px;
-    font-size: 15px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text);
+.add-form textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 14px;
+  border-radius: var(--radius);
+  border: 1px solid #e5e7eb;
+  font-size: 15px;
+  resize: none;
 }
 
-button {
-    width: 100%;
-    margin-top: 8px;
-    padding: 12px;
-    font-size: 15px;
-    border-radius: 12px;
-    border: none;
-    background: var(--primary);
-    color: #fff;
+.add-form button {
+  margin-top: 8px;
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius);
+  border: none;
+  background: var(--primary);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-/* NOTES */
+/* =========================
+   NOTES LIST
+========================= */
+
 .notes {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .notes li {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 14px;
-    margin-bottom: 12px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
 }
 
 .notes li.pinned {
-    border-left: 4px solid var(--primary);
+  border-left: 4px solid var(--primary);
 }
 
 .notes p {
-    margin: 0;
-    font-size: 15px;
+  margin: 0 0 6px;
+  font-size: 15px;
+  line-height: 1.4;
 }
+
+.notes textarea.edit-area {
+  width: 100%;
+  border: none;
+  font-size: 15px;
+  resize: none;
+  background: transparent;
+}
+
+.notes textarea.edit-area:disabled {
+  color: var(--text);
+}
+
+/* =========================
+   META / ACTIONS
+========================= */
 
 .timestamp {
-    display: block;
-    margin-top: 6px;
-    font-size: 12px;
-    color: var(--muted);
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
 }
 
-/* ACTIONS */
 .actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.actions a {
-    text-decoration: none;
-    color: var(--primary);
-    font-size: 14px;
+  display: flex;
+  gap: 10px;
 }
 
 .actions button {
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: 14px;
-    cursor: pointer;
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  background: #f1f3f9;
+  font-size: 13px;
 }
 
-.actions .delete {
-    color: var(--danger);
+.actions button.delete {
+  color: var(--danger);
 }
 
-.actions .pin {
-    color: var(--primary);
-}
+/* =========================
+   FAB
+========================= */
 
-/* FLOATING BUTTON */
 .fab {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: #fff;
-    font-size: 32px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  border: none;
+  width: 180px;
+  height: 52px;
+  border-radius: 26px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(79,110,247,0.4);
+}
+
+/* =========================
+   DESKTOP TWEAK
+========================= */
+
+@media (min-width: 768px) {
+  main {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .fab {
+    width: 200px;
+  }
 }
