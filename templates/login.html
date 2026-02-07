@@ -3,7 +3,7 @@
 {% block content %}
 <h2>Prijava</h2>
 
-<form onsubmit="login(event)" class="login-form">
+<form id="loginForm" class="login-form">
     <input type="email" id="email" placeholder="Email" required>
     <input type="password" id="password" placeholder="Lozinka" required>
     <button type="submit">Uđi</button>
@@ -13,18 +13,8 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
-const SUPABASE_URL = "https://XXXX.supabase.co";
-const SUPABASE_ANON_KEY = "XXXX";
-
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
-
-async function login(e) {
+document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const email = document.getElementById("email").value;
@@ -41,8 +31,8 @@ async function login(e) {
         return;
     }
 
-    // login OK → idi na notes
+    // login OK
     window.location.href = "/";
-}
+});
 </script>
 {% endblock %}
