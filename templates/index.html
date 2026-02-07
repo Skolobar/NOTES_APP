@@ -38,20 +38,23 @@
 </ul>
 
 {% endblock %}
+
+{% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
   const SUPABASE_URL = "https://XXXX.supabase.co";
   const SUPABASE_ANON_KEY = "XXXX";
 
   const supabaseClient = supabase.createClient(
-
     SUPABASE_URL,
     SUPABASE_ANON_KEY
   );
 </script>
+
 <script>
   async function testLogin() {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
       email: "test@test.com",
       password: "123456"
     });
@@ -65,4 +68,4 @@
 
   testLogin();
 </script>
-
+{% endblock %}
